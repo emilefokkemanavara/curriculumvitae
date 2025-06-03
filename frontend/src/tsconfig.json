@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "emitDeclarationOnly": true,
+        "outDir": "../../dist-types/frontend/src",
+        "target": "esnext",
+        "moduleResolution": "bundler",
+        "lib": ["DOM", "ES2015"]
+    },
+    "include": ["**/*"]
+}

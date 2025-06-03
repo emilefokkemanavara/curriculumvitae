@@ -1,0 +1,10 @@
+{
+    "name": "curriculumvitae-frontend",
+    "scripts": {
+        "dev": "vite dev"
+    },
+    "devDependencies": {
+        "typescript": "^5.8.3",
+        "vite": "^6.3.5"
+    }
+}
