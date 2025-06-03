@@ -2,6 +2,7 @@
     "compilerOptions": {
         "composite": true,
         "emitDeclarationOnly": true,
+        "experimentalDecorators": true,
         "outDir": "../../dist-types/frontend/src",
         "target": "esnext",
         "moduleResolution": "bundler",
