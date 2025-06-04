@@ -1,8 +1,49 @@
 :root {
-    font-size: 1vw;
+    font-size: .17vw;
+    --header-height: 8.71vw;
+    --page-height: 141.4213vw;
+    --darkblue: #000b3b;
+    --lightgrey: #efefef;
+    --lightblue: #3665ff;
+}
+
+@font-face {
+    font-family: "Be Vietnam Pro";
+    src: local("Be Vietnam Pro"), url("BeVietnamPro-Regular.ttf") format("opentype");
+    font-weight: 100 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Be Vietnam Pro";
+    src: local("Be Vietnam Pro"), url("BeVietnamPro-Italic.ttf") format("opentype");
+    font-weight: 100 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Be Vietnam Pro";
+    src: local("Be Vietnam Pro"), url("BeVietnamPro-Bold.ttf") format("opentype");
+    font-weight: 600 1000;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Be Vietnam Pro";
+    src: local("Be Vietnam Pro"), url("BeVietnamPro-BoldItalic.ttf") format("opentype");
+    font-weight: 600 1000;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Source Serif";
+    src: local("Source Serif"), url("source-serif-pro.semibold.ttf") format("opentype");
 }
 
 body {
     margin: 0;
-    padding: 0;
+}
+
+cv-pagina:first-of-type{
+    padding-top: var(--header-height);
 }

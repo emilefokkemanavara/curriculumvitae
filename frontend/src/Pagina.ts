@@ -4,13 +4,13 @@ import { customElement } from 'lit/decorators.js';
 @customElement('cv-pagina')
 export class Page extends LitElement {
     static styles = css`
-    :host {
-        color: blue;
-        font-family: sans-serif;
-    }
+        :host {
+            display: block;
+            height: var(--page-height);
+        }
     `
 
     render(){
-        return html`<h1>Een pagina</h1>`
+        return html`<div style="height: 100%;"><slot></slot></div>`
     }
 }
