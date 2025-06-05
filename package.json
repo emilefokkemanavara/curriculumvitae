@@ -6,6 +6,11 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "yarn workspace curriculumvitae-frontend dev"
+    "dev": "yarn workspace curriculumvitae-frontend dev",
+    "check-types": "tsc --build",
+    "build": "yarn workspace curriculumvitae-frontend build"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }

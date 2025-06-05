@@ -41,9 +41,6 @@ export class TitelBlad extends LitElement {
         .italic {
             font-style: italic;
         }
-        .space {
-            height: 8vw;
-        }
         .lightblue {
             color: var(--lightblue);
         }
@@ -51,10 +48,7 @@ export class TitelBlad extends LitElement {
 
     render(){
         return html`
-            <div class="space"></div>
-            <titelblad-regel font="vietnam" size="20">&nbsp;</titelblad-regel>
-            <titelblad-regel font="vietnam" size="20">&nbsp;</titelblad-regel>
-            <titelblad-regel font="vietnam" size="20">&nbsp;</titelblad-regel>
+            <titelblad-regel font="vietnam" size="20"><br /><br /><br /></titelblad-regel>
             <titelblad-regel font="vietnam" size="20">
                 <span class="cv">curriculum vitae</span>
             </titelblad-regel>
@@ -65,8 +59,7 @@ export class TitelBlad extends LitElement {
             <titelblad-regel font="vietnam" size="20">
                 Software Engineer
             </titelblad-regel>
-            <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
-            <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
+            <titelblad-regel font="vietnam" size="14"><br /><br /><br /></titelblad-regel>
             <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
             <titelblad-regel font="source" size="16">
                 Wiskunde
@@ -81,10 +74,7 @@ export class TitelBlad extends LitElement {
             <titelblad-regel font="vietnam" size="16">
                 <span class="italic">Angular, TypeScript, C#</span>
             </titelblad-regel>
-            <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
-            <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
-            <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
-            <titelblad-regel font="vietnam" size="14">&nbsp;</titelblad-regel>
+            <titelblad-regel font="vietnam" size="14"><br /><br /><br /><br /></titelblad-regel>
             <titelblad-regel font="source" size="20">
                 <span class="lightblue">#1 in Software Delivery</span>
             </titelblad-regel>

@@ -7,7 +7,8 @@
         "useDefineForClassFields": false,
         "target": "esnext",
         "moduleResolution": "bundler",
-        "lib": ["DOM", "ES2015"]
+        "lib": ["DOM", "ES2015"],
+        "types": []
     },
     "include": ["**/*"]
 }

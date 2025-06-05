@@ -1,6 +1,6 @@
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import logoUrl from './logo.svg'
+import logoUrl from '../logo.svg'
 
 @customElement('cv-header')
 export class Header extends LitElement {

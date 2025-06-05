@@ -1,0 +1,9 @@
+:root {
+    font-size: .17vw;
+    --header-height: 8.71vw;
+    --page-height: 141.4213vw;
+}
+
+cv-pagina:first-of-type{
+    padding-top: var(--header-height);
+}
