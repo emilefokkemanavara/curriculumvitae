@@ -9,6 +9,7 @@ export default defineConfig({
             input: [
                 fileURLToPath(new URL('./index.html', import.meta.url)),
                 fileURLToPath(new URL('./cv/index.html', import.meta.url)),
+                fileURLToPath(new URL('./editor/index.html', import.meta.url)),
             ]
         }
     }

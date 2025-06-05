@@ -1,4 +1,4 @@
-import '../index.css'
+import '../shared.css'
 import './index.css'
 import './Header'
 import './Pagina'

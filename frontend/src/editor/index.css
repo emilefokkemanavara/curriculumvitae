@@ -1,0 +1,23 @@
+body {
+    font-family: "Be Vietnam Pro"
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+#editor-panel {
+    width: 500px;
+}
+
+.container .body .right-panel {
+    flex-grow: 1;
+}
