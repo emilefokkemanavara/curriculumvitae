@@ -5,10 +5,20 @@
     </head>
     <body>
         <div class="container">
-            <div class="header">Editor!</div>
+            <div class="header">
+                <div class="left">Bewerken!</div>
+                <div class="right">
+                    <button id="opslaan">Opslaan</button>
+                </div>
+            </div>
             <div class="body">
                 <div id="editor-panel"></div>
-                <div class="right-panel"></div>
+                <div class="right-panel">
+                    <div class="top">
+                        <issue-list id="issue-list"></issue-list>
+                    </div>
+                    <div class="bottom">feedback</div>
+                </div>
             </div>
         </div>
         <script type="module" src="../src/editor/main.ts"></script>

@@ -1,21 +1,18 @@
 import '../shared.css'
 import './index.css'
-import { editor } from 'monaco-editor'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+import { createJsonEditor } from './json-editor';
+import { validate } from './validation';
+import './IssueList'
+import { IssueList } from './IssueList'
+import { CvSchema } from '../cv-schema';
 
-window.MonacoEnvironment = {
-    getWorker(_, label: string){
-		if (label === 'json') {
-            return new jsonWorker()
-        }
-        return new editorWorker()
-    }
-}
-
-function main(): void {
-    const jsonEditor = editor.create(document.getElementById('editor-panel'), {
-        language: 'json'
+async function main(): Promise<void> {
+    const jsonEditor = await createJsonEditor();
+    const saveButton = document.getElementById('opslaan') as HTMLButtonElement;
+    const issueList = document.getElementById('issue-list') as IssueList;
+    saveButton.addEventListener('click', () => {
+        const issues = validate(jsonEditor, CvSchema);
+        issueList.issues = issues;
     })
 }
 
