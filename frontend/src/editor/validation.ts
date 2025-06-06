@@ -1,25 +1,6 @@
 import { JsonEditor } from "./json-editor";
 import { ZodError, ZodType } from 'zod'
-
-export type GeneralValidationIssue = {
-    type: 'general'
-    message: string
-}
-
-export type MissingPropertyIssue = {
-    type: 'missing_property'
-    propertyPath: (string | number)[]
-    expectedType: string
-}
-
-export type WrongTypeIssue = {
-    type: 'wrong_type'
-    propertyPath: (string | number)[]
-    expectedType: string
-}
-
-
-export type ValidationIssue = GeneralValidationIssue | MissingPropertyIssue | WrongTypeIssue
+import { ValidationIssue, ValidationResult } from "./validation-result";
 
 function *mapZodIssues(zodError: ZodError): Iterable<ValidationIssue> {
     for(const issue of zodError.issues){
@@ -40,20 +21,26 @@ function *mapZodIssues(zodError: ZodError): Iterable<ValidationIssue> {
         }
     }
 }
-export function validate(editor: JsonEditor, schema: ZodType): ValidationIssue[] {
+export function validate<T>(editor: JsonEditor, schema: ZodType<T>): ValidationResult<T> {
     const value = editor.getValue();
     if(!value || editor.hasErrors()){
-        return [
-            {
-                type: 'general',
-                message: 'Geen geldige JSON'
-            }
-        ]
+        return {
+            success: false,
+            issues: [
+                {
+                    type: 'general',
+                    message: 'Geen geldige JSON'
+                }
+            ]
+        }
     }
     const parsed = JSON.parse(value);
     const zodParsed = schema.safeParse(parsed);
     if(zodParsed.success){
-        return [];
+        return {success: true, value: zodParsed.data };
     }
-    return [...mapZodIssues(zodParsed.error)]
+    return {
+        success: false,
+        issues: [...mapZodIssues(zodParsed.error)]
+    }
 }

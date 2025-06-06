@@ -17,15 +17,21 @@ export interface JsonEditor{
 
 export async function createJsonEditor(): Promise<JsonEditor> {
     const { editor, MarkerSeverity } = await import('monaco-editor');
-    const monacoEditor = editor.create(document.getElementById('editor-panel'), {
+    const monacoEditor = editor.create(document.getElementById('editor-panel')!, {
         language: 'json'
     });
     const model = monacoEditor.getModel();
     return {
         getValue(){
+            if(!model){
+                return '';
+            }
             return model.getValue();
         },
         hasErrors(){
+            if(!model){
+                return false;
+            }
             const markers = editor.getModelMarkers({
                 resource: model.uri
             });

@@ -21,10 +21,10 @@ class TitelbladRegel extends LitElement {
     `;
 
     @property()
-    size: number;
+    size!: number;
 
     @property()
-    font: 'vietnam' | 'source'
+    font!: 'vietnam' | 'source'
 
     render(){
         const classes = {vietnam: this.font === 'vietnam', source: this.font === 'source'}

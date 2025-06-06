@@ -1,6 +1,6 @@
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { ValidationIssue } from './validation'
+import type { ValidationIssue } from './validation-result'
 
 @customElement('issue-list')
 export class IssueList extends LitElement {
@@ -12,7 +12,7 @@ export class IssueList extends LitElement {
     `
 
     @property()
-    issues: ValidationIssue[]
+    issues: ValidationIssue[] = []
 
     renderIssue(issue: ValidationIssue) {
         if(issue.type === 'general'){
