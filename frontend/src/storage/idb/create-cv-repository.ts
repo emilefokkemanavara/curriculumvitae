@@ -22,6 +22,17 @@ export function createCvRepository(): CvRepository {
                 {error: true}
             );
             console.log('did put into db', putResult)
-        }
+        },
+        async getCv(id) {
+            console.log('getting cv by id', id)
+            const db = await openDb();
+            const transaction = db.transaction(CVS_OBJECT_STORE_NAME, 'readonly');
+            const store = transaction.objectStore(CVS_OBJECT_STORE_NAME);
+            const result = await performDbRequest<any, IDBRequestEventMap, IDBRequest<any>>(
+                () => store.get(id),
+                {error: true}
+            );
+            return result;
+        },
     }
 }

@@ -12,6 +12,7 @@ window.MonacoEnvironment = {
 
 export interface JsonEditor{
     getValue(): string
+    setValue(value: string): void
     hasErrors(): boolean
 }
 
@@ -27,6 +28,9 @@ export async function createJsonEditor(): Promise<JsonEditor> {
                 return '';
             }
             return model.getValue();
+        },
+        setValue(value: string){
+            model?.setValue(value);
         },
         hasErrors(){
             if(!model){
