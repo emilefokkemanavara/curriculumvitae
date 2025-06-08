@@ -1,0 +1,17 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+        "voornaam": {
+            "type": "string",
+            "description": "De voornaam",
+            "minLength": 1
+        },
+        "achternaam": {
+            "type": "string",
+            "description": "De achternaam",
+            "minLength": 1
+        }
+    },
+    "required": ["voornaam", "achternaam"]
+}

@@ -1,52 +1,9 @@
 body {
     font-family: "Be Vietnam Pro";
+    font-size: 14px;
     color: var(--darkblue)
 }
 
-input, button {
-    font-family: "Be Vietnam Pro";
-    color: var(--darkblue);
-    background-color: var(--lightgrey);
-    border-color: var(--darkblue);
-    border-radius: 3px;
-}
-
-button:active {
-    border-color: var(--lightblue);
-}
-
-.container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.container > .body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-}
-
-.container > .header {
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-}
-
-.container > .header > .left {
-    flex-grow: 1;
-}
-
-#editor-panel {
-    width: 500px;
-}
-
-.container > .body > .right-panel {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.container > .body > .right-panel > .top {
-    flex-grow: 1;
+#json-editor {
+    height: 100%;
 }

@@ -15,8 +15,12 @@ export type WrongTypeIssue = {
     expectedType: string
 }
 
-
-export type ValidationIssue = GeneralValidationIssue | MissingPropertyIssue | WrongTypeIssue
+export type TooLittleIssue = {
+    type: 'too_little',
+    propertyPath: (string | number)[]
+    minimum: number | bigint
+}
+export type ValidationIssue = GeneralValidationIssue | MissingPropertyIssue | WrongTypeIssue | TooLittleIssue
 
 export type SuccessValidationResult<T> = {
     success: true

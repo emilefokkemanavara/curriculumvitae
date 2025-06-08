@@ -1,17 +1,17 @@
-import { LitElement, css, html, unsafeCSS } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { ValidationIssue } from './validation-result'
 
 @customElement('issue-list')
 export class IssueList extends LitElement {
     static styles = css`
-    pre {
-        display: inline;
-        padding: 0 5px 0 5px;
-    }
+        pre {
+            display: inline;
+            padding: 0 5px 0 5px;
+        }
     `
 
-    @property()
+    @property({type: Array})
     issues: ValidationIssue[] = []
 
     renderIssue(issue: ValidationIssue) {
@@ -24,10 +24,18 @@ export class IssueList extends LitElement {
                 return html`<span>Moet <pre>${issue.expectedType}</pre> zijn</span>`
             }
             return html`<span><pre>${issue.propertyPath}</pre> moet <pre>${issue.expectedType}</pre> zijn</span>`
+        }else if(issue.type === 'too_little'){
+            return html`<span><pre>${issue.propertyPath}</pre> is te weinig. Minimum: ${issue.minimum}</span>`
         }
     }
 
     render() {
         return html`<ul>${(this.issues || []).map(i => html`<li>${this.renderIssue(i)}</li>`)}</ul>`
     }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "issue-list": IssueList;
+  }
 }

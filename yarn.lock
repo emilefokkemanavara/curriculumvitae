@@ -210,12 +210,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lit/reactive-element@npm:^2.1.0":
+"@lit/context@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@lit/context@npm:1.1.5"
+  dependencies:
+    "@lit/reactive-element": "npm:^1.6.2 || ^2.1.0"
+  checksum: 10c0/16ab105c8fa32db9407199ee5d0ef3751946490946bcdbbd6fe87ab7e09dbce1e00a58c46638340958e4520b69406b3b797ead00017c68db9b268d30c5eda5c3
+  languageName: node
+  linkType: hard
+
+"@lit/reactive-element@npm:^1.0.0 || ^2.0.0, @lit/reactive-element@npm:^1.6.2 || ^2.1.0, @lit/reactive-element@npm:^2.1.0":
   version: 2.1.0
   resolution: "@lit/reactive-element@npm:2.1.0"
   dependencies:
     "@lit-labs/ssr-dom-shim": "npm:^1.2.0"
   checksum: 10c0/3cd61c4e7cc8effeb2c246d5dada8fbe0a730e9e0dd488eb38c91a4f63b773e3b7f86f8384051677298e73de470c7ca6b5634df3ca190b307f8bb8e0d51bb91c
+  languageName: node
+  linkType: hard
+
+"@lit/task@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@lit/task@npm:1.0.2"
+  dependencies:
+    "@lit/reactive-element": "npm:^1.0.0 || ^2.0.0"
+  checksum: 10c0/888a1b7fbd522d64028c8592feb236ac7bbd57678a4a82e5934abee9c33fe0567af014d72fb6ca0edf6866d9ef182df7ca15500ba493aafd6c26d2e832f341aa
   languageName: node
   linkType: hard
 
@@ -529,6 +547,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "curriculumvitae-frontend@workspace:frontend"
   dependencies:
+    "@lit/context": "npm:^1.1.5"
+    "@lit/task": "npm:^1.0.2"
     "@types/node": "npm:^22.15.30"
     lit: "npm:^3.3.0"
     monaco-editor: "npm:^0.52.2"

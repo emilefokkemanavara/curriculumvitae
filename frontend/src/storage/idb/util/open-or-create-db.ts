@@ -1,6 +1,6 @@
 import { performDbRequest } from "./perform-db-request";
 
-type CreateObjectStore = (...args: Parameters<IDBDatabase['createObjectStore']>) => void
+type CreateObjectStore = IDBDatabase['createObjectStore']
 
 function waitForTransactionToComplete(transaction: IDBTransaction): Promise<void> {
     return new Promise<void>((res, rej) => {
@@ -31,7 +31,7 @@ function waitForTransactionToComplete(transaction: IDBTransaction): Promise<void
 }
 export async function openOrCreateDb(name: string, createSchema: (createObjectStore: CreateObjectStore) => void): Promise<IDBDatabase> {
     return performDbRequest<IDBDatabase, IDBOpenDBRequestEventMap, IDBOpenDBRequest>(
-        () => window.indexedDB.open(name), {
+        () => globalThis.indexedDB.open(name), {
             error: true,
             blocked: true,
             upgradeneeded: async (ev, db) => {
@@ -43,6 +43,7 @@ export async function openOrCreateDb(name: string, createSchema: (createObjectSt
                     }else if(store.transaction !== transaction){
                         console.log('created another object store but this one has a different transaction!')
                     }
+                    return store;
                 });
                 if(transaction){
                     await waitForTransactionToComplete(transaction);

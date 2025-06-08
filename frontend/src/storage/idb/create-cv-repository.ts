@@ -6,7 +6,8 @@ const CVS_OBJECT_STORE_NAME = 'cvs';
 
 function openDb(): Promise<IDBDatabase> {
     return openOrCreateDb('curriculumvitae', (createObjectStore) => {
-        createObjectStore(CVS_OBJECT_STORE_NAME, {keyPath: 'id'})
+        const store = createObjectStore(CVS_OBJECT_STORE_NAME, {keyPath: 'id'});
+        store.createIndex('name', 'name');
     })
 }
 

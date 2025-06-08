@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 
 export default defineConfig({
     root: '.',
+    base: '/curriculumvitae',
     build: {
         outDir: 'dist',
         rollupOptions: {

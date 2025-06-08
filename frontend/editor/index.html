@@ -4,23 +4,9 @@
 
     </head>
     <body>
-        <div class="container">
-            <div class="header">
-                <div class="left">Bewerken!</div>
-                <div class="right">
-                    <button id="opslaan">Opslaan</button>
-                </div>
-            </div>
-            <div class="body">
-                <div id="editor-panel"></div>
-                <div class="right-panel">
-                    <div class="top">
-                        <issue-list id="issue-list"></issue-list>
-                    </div>
-                    <div class="bottom">feedback</div>
-                </div>
-            </div>
-        </div>
+        <cv-editor id="cv-editor">
+            <div slot="json-editor" id="json-editor"></div>
+        </cv-editor>
         <script type="module" src="../src/editor/main.ts"></script>
     </body>
 </html>
