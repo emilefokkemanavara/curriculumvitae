@@ -2,65 +2,67 @@ import { LitElement, html } from 'lit';
 import {Task} from '@lit/task';
 import { provide } from '@lit/context';
 import { customElement, property, state } from 'lit/decorators.js';
-import { createPageUrl, PageUrl } from './page-url';
-import { CvRecord, CvRepository, StorableCv } from '../storage/cv-repository';
-import { createCvRepository as createIdbCvRepository } from '../storage/idb/create-cv-repository';
 import './EditorForm'
-import { JsonEditor } from './json-editor';
-import { jsonEditorContext } from './json-editor-context';
-import { createCvId } from '../storage/create-cv-id';
+import { Dependencies } from './dependencies';
+import { dependenciesContext } from './dependencies-context';
+import { CvRecord } from '../cv-schema';
 
 @customElement('cv-editor')
 export class Editor extends LitElement {
-    private pageUrl: PageUrl = createPageUrl();
-    private repository: CvRepository = createIdbCvRepository();
+    private hasInitialized = false;
+
+    @provide({context: dependenciesContext})
+    @property({type: Object})
+    public dependencies: Dependencies | undefined;
 
     @state()
     private hasUnsavedChanges = true
 
     private task = new Task(this, {
-        task: async ([cvId]) => {
-            if(cvId === null){
+        task: async ([cvId, deps]) => {
+            if(cvId === null || !deps){
                 return;
             }
-            const existingCv = await this.repository.getCv(cvId);
+            const existingCv = await deps.cvService.getCv(cvId);
             if(existingCv){
                 this.hasUnsavedChanges = false;
             }
             this.existingCv = existingCv;
         },
-        args: () => [this.cvId]
+        args: () => [this.cvId, this.dependencies]
     })
 
     cvId: string | null = null;
     newCvId: string | null = null;
 
     @state()
-    private existingCv: StorableCv | undefined;
-
-    @provide({context: jsonEditorContext})
-    @property({type: Object})
-    jsonEditor: JsonEditor | undefined;
+    private existingCv: CvRecord | undefined;
 
     private async onSaveRequested(ev: CustomEvent<CvRecord>): Promise<void> {
+        if(!this.dependencies){
+            return;
+        }
         const cv = ev.detail;
-        const cvIsNew = this.newCvId === null;
-        const newId = this.cvId || this.newCvId || (this.newCvId = createCvId());
-        await this.repository.storeCv({...cv, id: newId });
+        const cvIsNew = !this.cvId && this.newCvId === null;
+        const newId = await this.dependencies.cvService.storeCv(cv, this.cvId || this.newCvId);
+        this.newCvId = newId;
         if(cvIsNew){
-            this.pageUrl.setCvId(newId);
+            this.dependencies.pageUrl.setCvId(newId);
             this.newCvId = newId
         }
         this.hasUnsavedChanges = false;
     }
 
     private onFormChanged(){
-        console.log('form changed!')
         this.hasUnsavedChanges = true;
     }
 
-    protected firstUpdated(): void {
-        this.cvId = this.pageUrl.getCvId();
+    protected updated(){
+        if(!this.dependencies || this.hasInitialized){
+            return;
+        }
+        this.cvId = this.dependencies.pageUrl.getCvId();
+        this.hasInitialized = true;
     }
 
     render(){

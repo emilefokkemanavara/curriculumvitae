@@ -6,3 +6,7 @@ export const CvSchema = z.object({
 })
 
 export type Cv = z.infer<typeof CvSchema>;
+export type CvRecord = {
+    name: string
+    cv: Cv
+}

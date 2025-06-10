@@ -16,37 +16,42 @@ export function performDbRequest<
     errorEvents: ErrorEventHandlingMap<TMap, [TResult]>
 ): Promise<TResult> {
     return new Promise<TResult>(async (res, rej) => {
-        const req = fn();
+        try{
+            const req = fn();
 
-        req.addEventListener('success', successCallback);
-        for(const errorEvent in errorEvents){
-            req.addEventListener(errorEvent, errorCallback);
-        }
-        async function errorCallback(ev: TMap[keyof TMap] & Event): Promise<void> {
-            removeListeners();
-            const eventType = ev.type;
-            const handling = errorEvents[eventType as keyof TMap] as ErrorEventHandling<TMap[keyof TMap], [TResult]>;
-            if(handling === true){
-                rej(ev);
-            }else{
-                const result = req.result;
-                try{
-                    await handling(ev, result);
-                    res(result);
-                }catch(e){
-                    rej(e);
+            req.addEventListener('success', successCallback);
+            for(const errorEvent in errorEvents){
+                req.addEventListener(errorEvent, errorCallback);
+            }
+            async function errorCallback(ev: TMap[keyof TMap] & Event): Promise<void> {
+                removeListeners();
+                const eventType = ev.type;
+                const handling = errorEvents[eventType as keyof TMap] as ErrorEventHandling<TMap[keyof TMap], [TResult]>;
+                if(handling === true){
+                    rej(req.error);
+                }else{
+                    const result = req.result;
+                    try{
+                        await handling(ev, result);
+                        res(result);
+                    }catch(e){
+                        rej(e);
+                    }
                 }
             }
-        }
-        function successCallback(): void {
-            removeListeners();
-            res(req.result);
-        }
-        function removeListeners(): void {
-            req.removeEventListener('success', successCallback);
-            for(const errorEvent in errorEvents){
-                req.removeEventListener(errorEvent, errorCallback);
+            function successCallback(): void {
+                removeListeners();
+                res(req.result);
             }
+            function removeListeners(): void {
+                req.removeEventListener('success', successCallback);
+                for(const errorEvent in errorEvents){
+                    req.removeEventListener(errorEvent, errorCallback);
+                }
+            }
+        }catch(e){
+            rej(e);
         }
+        
     });
 }

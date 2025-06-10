@@ -2,88 +2,69 @@ import { LitElement, html, css } from 'lit';
 import {consume} from '@lit/context';
 import { customElement, state, property } from 'lit/decorators.js';
 import './IssueList'
-import { CvRecord, StorableCv } from '../storage/cv-repository';
 import { JsonEditor } from './json-editor';
-import { jsonEditorContext } from './json-editor-context';
 import { ValidationIssue } from './validation-result';
 import { validate } from './validation';
-import { CvSchema } from '../cv-schema';
+import { CvRecord, CvSchema } from '../cv-schema';
+import { buttonStyles } from '../shared-styles';
+import { Dependencies } from './dependencies';
+import { dependenciesContext } from './dependencies-context';
+import { fullCvSchemaUrl } from '../constants';
 
 @customElement('cv-editor-form')
 export class EditorForm extends LitElement {
-    static styles = css`
-        button {
-            font-family: "Be Vietnam Pro";
-            color: var(--lightblue);
-            background-color: var(--lightgrey);
-            border-color: var(--lightblue);
-            border-radius: 3px;
-            font-size: 1em;
+    static styles = [buttonStyles, css`
+        form {
+            display: inline;
         }
-
-        button:disabled{
-            opacity: .5;
-        }
-
+        
         .name-input {
             border-width: 0;
             font-size: 1.5em;
+            color: var(--darkblue);
         }
 
         .name-input:invalid {
             background-color: var(--lightgrey);
         }
 
-        button:active {
-            border-color: var(--lightblue);
-        }
-
-        .container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container > .body {
-            flex-grow: 1;
+        .body {
+            height: 100%;
             display: flex;
             flex-direction: row;
         }
 
-        .container > .header {
-            padding: 10px;
-            display: flex;
-            flex-direction: row;
-        }
-
-        .container > .header > .left {
-            flex-grow: 1;
+        .header {
+            padding: 1em;
         }
 
         .editor-panel {
             width: 500px;
         }
 
-        .container > .body > .right-panel {
+        .body > .right-panel {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
-        .container > .body > .right-panel > .top {
+        .body > .right-panel > .top {
             flex-grow: 1;
         }
-    `
+    `]
     private hasInitializedJsonEditor = false;
 
     @property({type: Object})
-    existingCv: StorableCv | undefined
+    existingCv: CvRecord | undefined
 
     @property({type: Boolean})
     hasUnsavedChanges = false;
 
-    @consume({context: jsonEditorContext, subscribe: true})
+    @state()
     jsonEditor: JsonEditor | undefined;
+
+    @consume({context: dependenciesContext, subscribe: true})
+    dependencies: Dependencies | undefined;
 
     @state()
     validationIssues: ValidationIssue[] = [];
@@ -145,10 +126,11 @@ export class EditorForm extends LitElement {
         }
     }
 
-    protected updated(): void {
-        if(!this.jsonEditor || this.hasInitializedJsonEditor){
+    protected async updated(): Promise<void> {
+        if(!this.dependencies || this.hasInitializedJsonEditor){
             return;
         }
+        this.jsonEditor = await this.dependencies.jsonEditorFactory(fullCvSchemaUrl);
         if(this.existingCv){
             const {cv} = this.existingCv;
             this.jsonEditor.setValue(cv);
@@ -161,16 +143,17 @@ export class EditorForm extends LitElement {
 
     render(){
         return html`
-            <div class="container">
-                 <div class="header">
-                    <div class="left">
-                        <input type="text" class="name-input" placeholder="Mijn CV" required .value="${this.name}" @input=${this.onNameInput.bind(this)} />
-                    </div>
-                    <div class="right">
-                        <button @click="${this.validateAndSave}" .disabled=${!this.hasUnsavedChanges}>Opslaan</button>
-                    </div>
+            <cv-app-layout>
+                <div class="header" slot="header-left">
+                    <input type="text" class="name-input" placeholder="Mijn CV" required .value="${this.existingCv?.name || ''}" @input=${this.onNameInput.bind(this)} />
                 </div>
-                <div class="body">
+                <div class="header" slot="header-right">
+                    <form action=".." method="get">
+                        <button type="submit">Naar overzicht</button>
+                    </form>
+                    <button @click="${this.validateAndSave}" .disabled=${!this.hasUnsavedChanges}>Opslaan</button>
+                </div>
+                <div class="body" slot="body">
                     <div class="editor-panel">
                         <slot name="json-editor"></slot>
                     </div>
@@ -181,7 +164,7 @@ export class EditorForm extends LitElement {
                         <div class="bottom">feedback</div>
                     </div>
                 </div>
-            </div>
+            </cv-app-layout>
         `
     }
 }

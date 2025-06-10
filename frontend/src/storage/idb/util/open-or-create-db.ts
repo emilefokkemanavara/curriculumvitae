@@ -51,3 +51,17 @@ export async function openOrCreateDb(name: string, createSchema: (createObjectSt
             }
         });
 }
+
+export async function openDbIfExists(name: string): Promise<IDBDatabase | undefined> {
+    const dbs = await globalThis.indexedDB.databases();
+    if(!dbs.some(db => db.name === name)){
+        return undefined;
+    }
+    return performDbRequest<IDBDatabase, IDBOpenDBRequestEventMap, IDBOpenDBRequest>(
+        () => globalThis.indexedDB.open(name), {
+            error: true,
+            blocked: true,
+            upgradeneeded: true
+        }
+    )
+}
