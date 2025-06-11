@@ -1,12 +1,37 @@
+import { createCvService } from '../services/cv-service';
+import { getCvType } from '../services/cv-type';
+import { createPageUrl } from '../services/page-url';
+import { validate } from '../services/validation';
 import '../shared.css'
-import './index.css'
-import './Header'
-import './Pagina'
-import './Titelblad'
-import './Samenvatting'
+import { createCvRepository } from '../storage/idb/create-cv-repository';
+import './CvView'
+import type { CvView } from './CvView'
+import 'navara-cv'
 
 function main(): void {
-    console.log('hello from main.ts')
+    const cvViewEl = document.getElementById('cv-view')! as CvView;
+    const repository = createCvRepository();
+    cvViewEl.dependencies = {
+        pageUrl: createPageUrl(),
+        cvService: createCvService(repository),
+        getCvType: () => getCvType(),
+        validate(record, cvType){
+            const cvValidationResult = validate(record.cv, cvType.schema);
+            if(cvValidationResult.success){
+                return {
+                    success: true,
+                    value: {
+                        name: record.name,
+                        cv: cvValidationResult.value
+                    }
+                }
+            }
+            return {
+                success: false,
+                issues: cvValidationResult.issues
+            }
+        },
+    }
 }
 
 main();

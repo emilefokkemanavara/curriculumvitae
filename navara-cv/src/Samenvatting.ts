@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { lightGrey } from './styles';
 
 @customElement('cv-samenvatting')
 export class Samenvatting extends LitElement {
@@ -14,7 +15,7 @@ export class Samenvatting extends LitElement {
             height: 100%;
         }
         .left {
-            background-color: var(--lightgrey);
+            background-color: ${lightGrey};
             width: 33.3vw;
         }
         .right {
@@ -30,4 +31,10 @@ export class Samenvatting extends LitElement {
             </div>
         `
     }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "cv-samenvatting": Samenvatting;
+  }
 }

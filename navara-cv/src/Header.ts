@@ -1,13 +1,14 @@
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import logoUrl from '../logo.svg'
+import logoUrl from './logo.svg'
+import { darkBlue, headerHeight } from './styles';
 
 @customElement('cv-header')
 export class Header extends LitElement {
     static styles = css`
     :host {
-        background-color: #000b3b;
-        height: var(--header-height);
+        background-color: ${darkBlue};
+        height: ${headerHeight};
         width: 100vw;
         display: block;
         top: 0;

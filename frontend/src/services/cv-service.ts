@@ -1,4 +1,4 @@
-import { CvRecord } from "../cv-schema";
+import { CvRecord } from "../cv-record";
 import { createCvId } from "../storage/create-cv-id";
 import { CvRepository } from "../storage/cv-repository";
 

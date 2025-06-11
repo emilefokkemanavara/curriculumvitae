@@ -3,6 +3,9 @@ import { customElement, property } from 'lit/decorators.js';
 import { buttonStyles } from '../shared-styles';
 import { fullEditorUrl } from '../constants';
 import { CvSummary } from '../services/cv-service';
+import { Dependencies } from './dependencies';
+import { consume } from '@lit/context';
+import { dependenciesContext } from './dependencies-context';
 
 @customElement('cv-list-item')
 export class CvListItem extends LitElement {
@@ -15,6 +18,13 @@ export class CvListItem extends LitElement {
         .row > .left {
             flex-grow: 1;
         }
+        a {
+            color: var(--darkblue);
+            text-decoration-color: transparent
+        }
+        a:hover{
+            text-decoration-color: var(--darkblue)
+        }
         form {
             display: inline;
         }
@@ -22,6 +32,9 @@ export class CvListItem extends LitElement {
 
     @property({type: Object})
     summary: CvSummary | undefined
+
+    @consume({context: dependenciesContext, subscribe: true})
+    dependencies: Dependencies | undefined
 
     private dispatchDeleteRequested(){
         const event = new CustomEvent('deleterequested');
@@ -34,13 +47,14 @@ export class CvListItem extends LitElement {
     }
 
     render(){
-        if(!this.summary){
+        if(!this.summary || !this.dependencies){
             return undefined;
         }
         return html`
             <div class="row">
                 <div class="left">
-                    ${this.summary.name}
+                    <a href="${this.dependencies.getCvUrl(this.summary.id)}">${this.summary.name}</a>
+                    
                 </div>
                 <div>
                     <button @click=${this.dispatchCopyRequested.bind(this)}>Kopi&euml;ren</button>

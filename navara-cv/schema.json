@@ -1,0 +1,47 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+        "voornaam": {
+            "type": "string",
+            "examples": ["Voornaam"]
+        },
+        "volledigeNaam": {
+            "type": "string",
+            "examples": ["Voornaam Achternaam"]
+        },
+        "rol": {
+            "type": "string",
+            "examples": ["Full Stack Software Engineer"]
+        },
+        "geboortedatum": {
+            "type": "string",
+            "examples": ["7 juni 1989"]
+        },
+        "voorblad": {
+            "type": "object",
+            "properties": {
+                "opleiding": {
+                    "type": "string",
+                    "examples": ["MSc Computer Science"]
+                },
+                "opleidingInstituut": {
+                    "type": "string",
+                    "examples": ["University of Utrecht"]
+                },
+                "specialisatie": {
+                    "type": "string",
+                    "examples": ["Java, Security & IAM"]
+                }
+            },
+            "required": ["opleiding", "opleidingInstituut", "specialisatie"]
+        }
+    },
+    "required": [
+        "voornaam",
+        "volledigeNaam",
+        "rol",
+        "geboortedatum",
+        "voorblad"
+    ]
+}

@@ -1,4 +1,4 @@
-import { CvRecord } from "../cv-schema";
+import { CvRecord } from "../cv-record"
 
 export type StorableCv = CvRecord & {id: string}
 export interface CvRepository {

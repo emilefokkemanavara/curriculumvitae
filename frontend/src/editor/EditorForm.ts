@@ -1,15 +1,14 @@
 import { LitElement, html, css } from 'lit';
 import {consume} from '@lit/context';
 import { customElement, state, property } from 'lit/decorators.js';
-import './IssueList'
+import '../IssueList'
 import { JsonEditor } from './json-editor';
-import { ValidationIssue } from './validation-result';
-import { validate } from './validation';
-import { CvRecord, CvSchema } from '../cv-schema';
+import { ValidationIssue } from '../services/validation-result';
 import { buttonStyles } from '../shared-styles';
 import { Dependencies } from './dependencies';
 import { dependenciesContext } from './dependencies-context';
-import { fullCvSchemaUrl } from '../constants';
+import { CvRecord } from '../cv-record';
+import { CvType } from '../services/cv-type';
 
 @customElement('cv-editor-form')
 export class EditorForm extends LitElement {
@@ -52,10 +51,12 @@ export class EditorForm extends LitElement {
             flex-grow: 1;
         }
     `]
-    private hasInitializedJsonEditor = false;
+    private hasInitialized = false;
 
     @property({type: Object})
-    existingCv: CvRecord | undefined
+    existingCv: CvRecord | null | undefined
+
+    private cvType: CvType | undefined;
 
     @property({type: Boolean})
     hasUnsavedChanges = false;
@@ -78,7 +79,7 @@ export class EditorForm extends LitElement {
     }
 
     private validateAndSave(): void {
-        if(!this.jsonEditor){
+        if(!this.jsonEditor || !this.dependencies || !this.cvType){
             return;
         }
         if(!this.name){
@@ -101,7 +102,7 @@ export class EditorForm extends LitElement {
             return;
         }
         const cv = this.jsonEditor.getValue();
-        const validatedCv = validate(cv, CvSchema);
+        const validatedCv = this.dependencies.validate(cv, this.cvType.schema);
         if(!validatedCv.success){
             this.validationIssues = validatedCv.issues;
             return;
@@ -127,10 +128,12 @@ export class EditorForm extends LitElement {
     }
 
     protected async updated(): Promise<void> {
-        if(!this.dependencies || this.hasInitializedJsonEditor){
+        if(!this.dependencies || this.existingCv === undefined || this.hasInitialized){
             return;
         }
-        this.jsonEditor = await this.dependencies.jsonEditorFactory(fullCvSchemaUrl);
+        const cvType = this.dependencies.getCvType(this.existingCv);
+        this.cvType = cvType;
+        this.jsonEditor = await this.dependencies.jsonEditorFactory(cvType.jsonSchemaUrl);
         if(this.existingCv){
             const {cv} = this.existingCv;
             this.jsonEditor.setValue(cv);
@@ -138,7 +141,7 @@ export class EditorForm extends LitElement {
         this.jsonEditor.addEventListener('changed', (e) => {
             this.dispatchChanged();
         })
-        this.hasInitializedJsonEditor = true;
+        this.hasInitialized = true;
     }
 
     render(){

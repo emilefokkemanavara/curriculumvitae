@@ -12,6 +12,7 @@
         "@types/node": "^22.15.30",
         "lit": "^3.3.0",
         "monaco-editor": "^0.52.2",
+        "navara-cv": "workspace:*",
         "typescript": "^5.8.3",
         "vite": "^6.3.5",
         "zod": "^3.25.55"

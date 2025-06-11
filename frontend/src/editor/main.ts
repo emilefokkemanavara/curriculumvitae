@@ -7,6 +7,8 @@ import { createJsonEditor } from './json-editor';
 import { createPageUrl } from '../services/page-url';
 import { createCvRepository } from '../storage/idb/create-cv-repository';
 import { createCvService } from '../services/cv-service';
+import { getCvType } from '../services/cv-type';
+import { validate } from '../services/validation';
 
 async function main(): Promise<void> {
     const jsonEditorEl = document.getElementById('json-editor')!;
@@ -15,6 +17,8 @@ async function main(): Promise<void> {
     editorEl.dependencies = {
         pageUrl: createPageUrl(),
         cvService: createCvService(repository),
+        getCvType: () => getCvType(),
+        validate: validate,
         jsonEditorFactory: (schemaUrl: string) => createJsonEditor(jsonEditorEl, schemaUrl)
     };
 }

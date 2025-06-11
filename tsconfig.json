@@ -2,6 +2,7 @@
     "include": [],
     "references": [
         {"path": "./frontend"},
-        {"path": "./frontend/src"}
+        {"path": "./frontend/src"},
+        {"path": "./navara-cv/src"}
     ]
 }

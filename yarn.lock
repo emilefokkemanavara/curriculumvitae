@@ -552,6 +552,7 @@ __metadata:
     "@types/node": "npm:^22.15.30"
     lit: "npm:^3.3.0"
     monaco-editor: "npm:^0.52.2"
+    navara-cv: "workspace:*"
     typescript: "npm:^5.8.3"
     vite: "npm:^6.3.5"
     zod: "npm:^3.25.55"
@@ -882,6 +883,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-schema-to-zod@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "json-schema-to-zod@npm:2.6.1"
+  bin:
+    json-schema-to-zod: dist/cjs/cli.js
+  checksum: 10c0/4edbb6de157b463407d935c53a5b0b24e2c547dc44495cb514e946e0022385a1a18db97b2714a140431e34f56c8090d373612812ccb7c45312368ca9a36ed341
+  languageName: node
+  linkType: hard
+
 "lit-element@npm:^4.2.0":
   version: 4.2.0
   resolution: "lit-element@npm:4.2.0"
@@ -1055,6 +1065,16 @@ __metadata:
   checksum: 10c0/40e7f70b3d15f725ca072dfc4f74e81fcf1fbb02e491cf58ac0c79093adc9b0a73b152bcde57df4b79cd097e13023d7504acb38404a4da7bc1cd8e887b82fe0b
   languageName: node
   linkType: hard
+
+"navara-cv@workspace:*, navara-cv@workspace:navara-cv":
+  version: 0.0.0-use.local
+  resolution: "navara-cv@workspace:navara-cv"
+  dependencies:
+    json-schema-to-zod: "npm:^2.6.1"
+    lit: "npm:^3.3.0"
+    vite: "npm:^6.3.5"
+  languageName: unknown
+  linkType: soft
 
 "negotiator@npm:^1.0.0":
   version: 1.0.0

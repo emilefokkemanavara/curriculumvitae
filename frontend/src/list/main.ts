@@ -6,12 +6,18 @@ import './CvListItem'
 import '../AppLayout'
 import { createCvRepository } from '../storage/idb/create-cv-repository'
 import { createCvService } from '../services/cv-service'
+import { fullCvUrl } from '../constants'
 
 function main(): void {
     const listEl = document.getElementById('cv-list')! as CvList;
     const repository = createCvRepository();
     listEl.dependencies = {
-        cvService: createCvService(repository)
+        cvService: createCvService(repository),
+        getCvUrl(id) {
+            const url = new URL(fullCvUrl);
+            url.searchParams.set('id', id);
+            return url.toString()
+        },
     }
 }
 

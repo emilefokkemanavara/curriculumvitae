@@ -5,7 +5,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import './EditorForm'
 import { Dependencies } from './dependencies';
 import { dependenciesContext } from './dependencies-context';
-import { CvRecord } from '../cv-schema';
+import { CvRecord } from '../cv-record';
 
 @customElement('cv-editor')
 export class Editor extends LitElement {
@@ -26,8 +26,10 @@ export class Editor extends LitElement {
             const existingCv = await deps.cvService.getCv(cvId);
             if(existingCv){
                 this.hasUnsavedChanges = false;
+                this.existingCv = existingCv;
+            }else{
+                this.existingCv = null;
             }
-            this.existingCv = existingCv;
         },
         args: () => [this.cvId, this.dependencies]
     })
@@ -36,7 +38,7 @@ export class Editor extends LitElement {
     newCvId: string | null = null;
 
     @state()
-    private existingCv: CvRecord | undefined;
+    private existingCv: CvRecord | null | undefined;
 
     private async onSaveRequested(ev: CustomEvent<CvRecord>): Promise<void> {
         if(!this.dependencies){

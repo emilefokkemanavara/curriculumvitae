@@ -1,10 +1,16 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { ValidationIssue } from './validation-result'
+import type { ValidationIssue } from './services/validation-result'
 
 @customElement('issue-list')
 export class IssueList extends LitElement {
     static styles = css`
+        :host {
+            font-family: "Be Vietnam Pro";
+            font-size: 14px;
+            color: var(--darkblue)
+        }
+
         pre {
             display: inline;
             padding: 0 5px 0 5px;

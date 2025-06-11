@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'url';
+import { addJsonSchemas } from './vite-plugins/add-json-schemas';
 
 export default defineConfig({
     root: '.',
@@ -13,5 +14,6 @@ export default defineConfig({
                 fileURLToPath(new URL('./editor/index.html', import.meta.url)),
             ]
         }
-    }
+    },
+    plugins: [addJsonSchemas()]
 })
