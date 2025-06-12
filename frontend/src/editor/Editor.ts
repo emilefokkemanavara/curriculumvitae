@@ -21,6 +21,7 @@ export class Editor extends LitElement {
     private task = new Task(this, {
         task: async ([cvId, deps]) => {
             if(cvId === null || !deps){
+                this.existingCv = null;
                 return;
             }
             const existingCv = await deps.cvService.getCv(cvId);
