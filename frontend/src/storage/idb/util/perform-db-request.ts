@@ -55,3 +55,9 @@ export function performDbRequest<
         
     });
 }
+
+export function performSimpleDbRequest<TResult>(
+    fn: () => IDBRequest<TResult>
+){
+    return performDbRequest<TResult, IDBRequestEventMap, IDBRequest<TResult>>(fn, {error: true})
+}

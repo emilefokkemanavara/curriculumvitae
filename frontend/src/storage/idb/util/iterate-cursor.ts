@@ -1,13 +1,9 @@
-type ContinueCursorInstruction = { type: 'continue', key?: IDBValidKey };
-type AdvanceCursorInstruction = { type: 'advance', count: number };
-type ContinuePrimaryKeyCursorInstruction = { type: 'continue_primary_key', key: IDBValidKey, primaryKey: IDBValidKey };
+import { CursorInstruction } from "./types";
 
-export type CursorInstruction = ContinueCursorInstruction | AdvanceCursorInstruction | ContinuePrimaryKeyCursorInstruction;
-
-export function iterateCursor<T>(start: () => IDBRequest<IDBCursorWithValue | null>): AsyncIterable<T, void, CursorInstruction | undefined> {
-    let { resolve, reject, promise } = Promise.withResolvers<IteratorResult<T, void>>();
+export function iterateCursor(start: () => IDBRequest<IDBCursorWithValue | null>): AsyncIterable<any, void, CursorInstruction | undefined> {
+    let { resolve, reject, promise } = Promise.withResolvers<IteratorResult<any, void>>();
     let idbRequest: IDBRequest<IDBCursorWithValue | null> | undefined;
-    function next(value?: CursorInstruction): Promise<IteratorResult<T, void>> {
+    function next(value?: CursorInstruction): Promise<IteratorResult<any, void>> {
         if(!idbRequest){
             idbRequest = start();
             idbRequest.addEventListener('success', successListener);
@@ -44,7 +40,7 @@ export function iterateCursor<T>(start: () => IDBRequest<IDBCursorWithValue | nu
         }
         const cursor = idbRequest.result;
         const previousResolve = resolve;
-        ({ resolve, reject, promise} = Promise.withResolvers<IteratorResult<T, void>>());
+        ({ resolve, reject, promise} = Promise.withResolvers<IteratorResult<any, void>>());
         if(!cursor){
             previousResolve({done: true, value: undefined})
         }else{
@@ -57,7 +53,7 @@ export function iterateCursor<T>(start: () => IDBRequest<IDBCursorWithValue | nu
         }
         reject(idbRequest.error);
     }
-    const iterator: AsyncIterator<T, void, CursorInstruction | undefined> = { next, return: close, throw: close };
+    const iterator: AsyncIterator<any, void, CursorInstruction | undefined> = { next, return: close, throw: close };
     return {
         [Symbol.asyncIterator](){
             return iterator;

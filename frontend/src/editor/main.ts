@@ -9,11 +9,12 @@ import { createCvRepository } from '../storage/idb/create-cv-repository';
 import { createCvService } from '../services/cv-service';
 import { getCvType } from '../services/cv-type';
 import { validate } from '../services/validation';
+import { createCvDb } from '../storage/idb/create-cv-db';
 
 async function main(): Promise<void> {
     const jsonEditorEl = document.getElementById('json-editor')!;
     const editorEl = document.getElementById('cv-editor')! as Editor;
-    const repository = createCvRepository();
+    const repository = createCvRepository(createCvDb());
     editorEl.dependencies = {
         pageUrl: createPageUrl(),
         cvService: createCvService(repository),

@@ -3,6 +3,7 @@ import { getCvType } from '../services/cv-type';
 import { createPageUrl } from '../services/page-url';
 import { validate } from '../services/validation';
 import '../shared.css'
+import { createCvDb } from '../storage/idb/create-cv-db';
 import { createCvRepository } from '../storage/idb/create-cv-repository';
 import './CvView'
 import type { CvView } from './CvView'
@@ -10,7 +11,7 @@ import 'navara-cv'
 
 function main(): void {
     const cvViewEl = document.getElementById('cv-view')! as CvView;
-    const repository = createCvRepository();
+    const repository = createCvRepository(createCvDb());
     cvViewEl.dependencies = {
         pageUrl: createPageUrl(),
         cvService: createCvService(repository),
