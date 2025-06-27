@@ -1,13 +1,14 @@
-import { ZodType } from "zod"
+import { Dependencies as CvDependencies } from "@curriculumvitae/elements"
 import { CvRecord } from "../cv-record"
 import { CvService } from "../services/cv-service"
 import { PageUrl } from "../services/page-url"
-import { ValidationResult } from "../services/validation-result"
 import { CvType } from "../services/cv-type"
+import { ValidationService } from "../services/validation-service"
 
 export interface Dependencies {
     pageUrl: PageUrl
     cvService: CvService
     getCvType: (record: CvRecord) => CvType
-    validate(value: CvRecord, cvType: CvType): ValidationResult<CvRecord>
+    validation: ValidationService
+    cvDependencies: CvDependencies
 }

@@ -1,4 +1,5 @@
 import { createDbStoreIndex } from "./create-db-store-index";
+import { iterateCursor } from "./iterate-cursor";
 import { performSimpleDbRequest } from "./perform-db-request";
 import { DbStore, DbStoreDefinition, DbStoreIndex } from "./types";
 
@@ -34,6 +35,20 @@ export function createDbStore(
             const db = await openOrCreateDb();
             try{
                 return await performSimpleDbRequest(() => getStore(db, 'readwrite').put(value, key));
+            }finally{
+                db.close();
+            }
+        },
+        async *readKeys(query?: IDBValidKey | IDBKeyRange | null, direction?: IDBCursorDirection){
+            const db = await openDbIfExists();
+            if(!db){
+                return;
+            }
+            try{
+                yield* iterateCursor(
+                    () => getStore(db, 'readwrite').openKeyCursor(query, direction),
+                    c => c.key
+                )
             }finally{
                 db.close();
             }

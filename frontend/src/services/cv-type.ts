@@ -1,5 +1,5 @@
 import { ZodType } from "zod";
-import navaraCvSchemaUrl from '/navara-cv-schema.json?url';
+import navaraCvSchemaUrl from '/schemas/navara-cv.json?url';
 import { CvSchema as NavaraCvSchema, type Cv as NavaraCv } from "navara-cv";
 import { html, TemplateResult } from "lit";
 

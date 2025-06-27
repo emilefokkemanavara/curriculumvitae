@@ -3,6 +3,7 @@ import {Task} from '@lit/task';
 import { provide } from '@lit/context';
 import { customElement, property, state } from 'lit/decorators.js';
 import './EditorForm'
+import '../AppLayout'
 import { Dependencies } from './dependencies';
 import { dependenciesContext } from './dependencies-context';
 import { CvRecord } from '../cv-record';

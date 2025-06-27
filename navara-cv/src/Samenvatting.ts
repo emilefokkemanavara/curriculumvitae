@@ -1,9 +1,11 @@
-import { LitElement, css, html } from 'lit';
+import { css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { CvElement } from '@curriculumvitae/elements';
 import { lightGrey } from './styles';
+import { Cv } from './schema';
 
 @customElement('cv-samenvatting')
-export class Samenvatting extends LitElement {
+export class Samenvatting extends CvElement {
     static styles = css`
         :host {
             display: block;
@@ -23,10 +25,15 @@ export class Samenvatting extends LitElement {
         }
     `
 
+    @property({type: Object})
+    cv: Cv | undefined
+
     render(){
         return html`
             <div class="container">
-                <div class="left">blah</div>
+                <div class="left">
+                    <img src=${this.imageUrl(this.cv?.profielfoto)} />
+                </div>
                 <div class-"right">bluh</div>
             </div>
         `

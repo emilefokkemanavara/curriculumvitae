@@ -1,5 +1,5 @@
 import { CvRecord } from "../cv-record";
-import { createCvId } from "../storage/create-cv-id";
+import { createCvId } from "../storage/create-id";
 import { CvRepository } from "../storage/cv-repository";
 
 export type CvSummary = {
@@ -40,11 +40,17 @@ export function createCvService(repository: CvRepository): CvService {
             }
         },
         async getAllCvs() {
-            const result: CvSummary[] = [];
-            for await(const { id, name } of repository.getAllCvs()){
-                result.push({id, name})
+            try{
+                const result: CvSummary[] = [];
+                for await(const { id, name } of repository.getAllCvs()){
+                    result.push({id, name})
+                }
+                return result;
+            }catch(e){
+                console.error(e)
+                throw e;
             }
-            return result;
+
         },
     }
     async function storeCv(cv: CvRecord, id: string | null): Promise<string> {

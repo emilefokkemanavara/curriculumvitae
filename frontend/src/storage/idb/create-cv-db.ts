@@ -6,7 +6,8 @@ export interface CvDb {
         indexes: {
             name: DbStoreIndex
         }
-    }
+    },
+    images: DbStore
 }
 
 export function createCvDb(): CvDb{
@@ -18,6 +19,9 @@ export function createCvDb(): CvDb{
                     keyPath: 'name'
                 }
             }
+        },
+        images: {
+            keyPath: 'id'
         }
     });
 }

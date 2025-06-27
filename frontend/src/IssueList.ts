@@ -32,6 +32,8 @@ export class IssueList extends LitElement {
             return html`<span><pre>${issue.propertyPath}</pre> moet <pre>${issue.expectedType}</pre> zijn</span>`
         }else if(issue.type === 'too_little'){
             return html`<span><pre>${issue.propertyPath}</pre> is te weinig. Minimum: ${issue.minimum}</span>`
+        }else if(issue.type === 'missing_image'){
+            return html`<span>Afbeelding <pre>${issue.imageId}</pre> bestaat niet.</span>`
         }
     }
 

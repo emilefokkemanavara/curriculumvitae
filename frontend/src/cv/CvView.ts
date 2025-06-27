@@ -3,6 +3,7 @@ import {Task} from '@lit/task';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { dependenciesContext } from './dependencies-context';
+import './CvDependenciesProvider'
 import { Dependencies } from './dependencies';
 import { CvRecord } from '../cv-record';
 import { ValidationIssue } from '../services/validation-result';
@@ -37,7 +38,7 @@ export class CvView extends LitElement {
             }
             const cvType = deps.getCvType(cvRecord);
             this.cvType = cvType;
-            const validationResult = deps.validate(cvRecord, cvType);
+            const validationResult = await deps.validation.validate(cvRecord, cvType);
             if(validationResult.success){
                 this.validationIssues = [];
                 this.cv = validationResult.value;
@@ -53,7 +54,7 @@ export class CvView extends LitElement {
         return this.task.render({
             pending: () => html`<span>Laden...</span>`,
             complete: () => {
-                if(this.cv === undefined){
+                if(this.cv === undefined || !this.dependencies){
                     return undefined;
                 }
                 if(this.validationIssues.length > 0){
@@ -66,7 +67,10 @@ export class CvView extends LitElement {
                     return undefined;
                 }
                 
-                return this.cvType.render(this.cv.cv)
+                return html`<cv-dependencies-provider 
+                    .cvDependencies=${this.dependencies.cvDependencies}>
+                        ${this.cvType.render(this.cv.cv)}
+                </cv-dependencies-provider>`
             },
             error: (e) => html`<span>Error: ${e}</span>`
         })

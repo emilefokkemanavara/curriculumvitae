@@ -4,7 +4,9 @@
   "packageManager": "yarn@4.9.1",
   "workspaces": [
     "frontend",
-    "navara-cv"
+    "navara-cv",
+    "schemas",
+    "elements"
   ],
   "scripts": {
     "dev": "yarn workspace curriculumvitae-frontend dev",

@@ -3,6 +3,9 @@
     "references": [
         {"path": "./frontend"},
         {"path": "./frontend/src"},
-        {"path": "./navara-cv/src"}
+        {"path": "./navara-cv/src"},
+        {"path": "./schemas"},
+        {"path": "./schemas/src"},
+        {"path": "./elements/src"}
     ]
 }

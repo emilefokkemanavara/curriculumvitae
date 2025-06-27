@@ -25,7 +25,10 @@ export function createDbStoreIndex(
                 return;
             }
             try {
-                yield* iterateCursor(() => getStore(db, 'readonly').index(indexName).openCursor(query, direction));
+                yield* iterateCursor(
+                    () => getStore(db, 'readonly').index(indexName).openCursor(query, direction),
+                    c => c.value
+                );
             } finally {
                 db.close();
             }

@@ -35,6 +35,9 @@
                 }
             },
             "required": ["opleiding", "opleidingInstituut", "specialisatie"]
+        },
+        "profielfoto": {
+            "$ref": "curriculumvitae.json#/definitions/image"
         }
     },
     "required": [
@@ -42,6 +45,7 @@
         "volledigeNaam",
         "rol",
         "geboortedatum",
-        "voorblad"
+        "voorblad",
+        "profielfoto"
     ]
 }

@@ -25,7 +25,7 @@ export class Cv extends LitElement {
             <cv-voorblad .cv=${this.cv}></cv-voorblad>
           </cv-pagina>
           <cv-pagina>
-            <cv-samenvatting></cv-samenvatting>
+            <cv-samenvatting .cv=${this.cv}></cv-samenvatting>
           </cv-pagina>
         `
     }

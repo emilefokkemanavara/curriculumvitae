@@ -1,5 +1,6 @@
 import { PluginOption, ResolvedConfig } from 'vite';
-import navaraCvSchema from 'navara-cv/schema.json' assert { type: 'json'}
+import navaraCvSchema from 'navara-cv/schema.json' with { type: 'json'}
+import curriculumVitaeSchema from 'curriculumvitae-schemas/curriculumvitae.json' with {type: 'json'}
 
 export interface JsonSchema {
     fileName: string
@@ -8,9 +9,15 @@ export interface JsonSchema {
 
 const schemas: JsonSchema[] = [
     {
-        fileName: 'navara-cv-schema.json',
+        fileName: 'schemas/navara-cv.json',
         getContent() {
             return JSON.stringify(navaraCvSchema);
+        },
+    },
+    {
+        fileName: 'schemas/curriculumvitae.json',
+        getContent() {
+            return JSON.stringify(curriculumVitaeSchema);
         },
     }
 ];
@@ -22,7 +29,7 @@ function resolveJsonSchemaModules(schemas: JsonSchema[]): PluginOption {
         configResolved(c) {
             config = c;
         },
-        resolveId(source, importer, options) {
+        resolveId(source) {
             const match = source.match(/^\/(.*\.json)\?url$/);
             if(!match){
                 return undefined;
@@ -52,16 +59,20 @@ function resolveJsonSchemaModules(schemas: JsonSchema[]): PluginOption {
 }
 
 function serveJsonSchemas(schemas: JsonSchema[]): PluginOption {
+    let config: ResolvedConfig;
     return {
         name: 'vite-plugin-serve-json-schemas',
         apply: 'serve',
+        configResolved(c) {
+            config = c;
+        },
         configureServer(server){
             server.middlewares.use((req, res, next) => {
                 const url = req.url;
                 if(!url){
                     return next();
                 }
-                const match = url.match(/([^/]*\.json)$/);
+                const match = url.match(new RegExp(`${config.base}(.*\\.json)$`));
                 if(!match){
                     return next();
                 }

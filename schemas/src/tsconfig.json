@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
+        "strict": true,
         "composite": true,
         "emitDeclarationOnly": true,
-        "outDir": "../dist-types/frontend",
+        "outDir": "../../dist-types/schemas/src",
         "target": "esnext",
         "module": "esnext",
         "moduleResolution": "bundler",
-        "types": ["node"]
+        "lib": ["ESNext"],
+        "types": []
     },
-    "include": ["**/*"],
-    "exclude": ["src/**/*"]
+    "include": ["**/*"]
 }

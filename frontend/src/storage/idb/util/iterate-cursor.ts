@@ -1,8 +1,11 @@
 import { CursorInstruction } from "./types";
 
-export function iterateCursor(start: () => IDBRequest<IDBCursorWithValue | null>): AsyncIterable<any, void, CursorInstruction | undefined> {
+export function iterateCursor<TCursor extends IDBCursor, TValue>(
+    start: () => IDBRequest<TCursor | null>,
+    valueSelector: (cursor: TCursor) => TValue
+): AsyncIterable<TValue, void, CursorInstruction | undefined> {
     let { resolve, reject, promise } = Promise.withResolvers<IteratorResult<any, void>>();
-    let idbRequest: IDBRequest<IDBCursorWithValue | null> | undefined;
+    let idbRequest: IDBRequest<TCursor | null> | undefined;
     function next(value?: CursorInstruction): Promise<IteratorResult<any, void>> {
         if(!idbRequest){
             idbRequest = start();
@@ -23,7 +26,7 @@ export function iterateCursor(start: () => IDBRequest<IDBCursorWithValue | null>
         }
         return Promise.resolve({done: true, value: undefined})
     }
-    function applyInstruction(cursor: IDBCursorWithValue, instruction: CursorInstruction | undefined): void {
+    function applyInstruction(cursor: TCursor, instruction: CursorInstruction | undefined): void {
         if(!instruction){
             cursor.continue();
             return;
@@ -44,7 +47,7 @@ export function iterateCursor(start: () => IDBRequest<IDBCursorWithValue | null>
         if(!cursor){
             previousResolve({done: true, value: undefined})
         }else{
-            previousResolve({done: false, value: cursor.value})
+            previousResolve({done: false, value: valueSelector(cursor)})
         }
     }
     function errorListener(){

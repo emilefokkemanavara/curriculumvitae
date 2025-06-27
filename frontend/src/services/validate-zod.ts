@@ -23,10 +23,16 @@ function *mapZodIssues(zodError: ZodError): Iterable<ValidationIssue> {
                 propertyPath: issue.path,
                 minimum: issue.minimum
             }
+        }else if(issue.code === ZodIssueCode.invalid_literal){
+            yield {
+                type: 'wrong_type',
+                propertyPath: issue.path,
+                expectedType: JSON.stringify(issue.expected)
+            }
         }
     }
 }
-export function validate<T>(value: unknown, schema: ZodType<T>): ValidationResult<T> {
+export function validateZod<T>(value: unknown, schema: ZodType<T>): ValidationResult<T> {
     const zodParsed = schema.safeParse(value);
     if(zodParsed.success){
         return {success: true, value: zodParsed.data };

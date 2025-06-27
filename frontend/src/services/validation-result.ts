@@ -9,6 +9,11 @@ export type MissingPropertyIssue = {
     expectedType: string
 }
 
+export type MissingImageIssue = {
+    type: 'missing_image'
+    imageId: string
+}
+
 export type WrongTypeIssue = {
     type: 'wrong_type'
     propertyPath: (string | number)[]
@@ -20,7 +25,7 @@ export type TooLittleIssue = {
     propertyPath: (string | number)[]
     minimum: number | bigint
 }
-export type ValidationIssue = GeneralValidationIssue | MissingPropertyIssue | WrongTypeIssue | TooLittleIssue
+export type ValidationIssue = GeneralValidationIssue | MissingPropertyIssue | WrongTypeIssue | TooLittleIssue | MissingImageIssue
 
 export type SuccessValidationResult<T> = {
     success: true

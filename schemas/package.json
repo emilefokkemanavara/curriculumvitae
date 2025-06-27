@@ -1,0 +1,27 @@
+{
+    "name": "curriculumvitae-schemas",
+    "version": "0.1.0",
+    "exports": {
+        "./curriculumvitae.json": "./curriculumvitae.json",
+        ".": "./src/index.ts"
+    },
+    "bin": {
+        "cv-schema-to-zod": "bin/cv-schema-to-zod.js"
+    },
+    "scripts": {
+        "generate-image-zod": "cv-schema-to-zod -i image.json -o src/image.ts -s ImageSchema -t Image"
+    },
+    "devDependencies": {
+        "commander": "^14.0.0",
+        "json-refs": "^3.0.15",
+        "json-schema-to-zod": "^2.6.1",
+        "vite-node": "^3.2.3"
+    },
+    "files": [
+        "curriculumvitae.json",
+        "src"
+    ],
+    "dependencies": {
+        "zod": "^3.25.55"
+    }
+}

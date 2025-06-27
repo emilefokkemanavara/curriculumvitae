@@ -36,6 +36,10 @@ export type DbStore<TStoreDefinition extends DbStoreDefinition = DbStoreDefiniti
     get(query: IDBValidKey | IDBKeyRange): Promise<any>
     put(value: any, key?: IDBValidKey): Promise<IDBValidKey>
     delete(query: IDBValidKey | IDBKeyRange): Promise<void>
+    readKeys(
+        query?: IDBValidKey | IDBKeyRange | null,
+        direction?: IDBCursorDirection
+    ): AsyncIterable<any, void, CursorInstruction | undefined>
 } & (
     TStoreDefinition extends {indexes: infer R} 
     ? {

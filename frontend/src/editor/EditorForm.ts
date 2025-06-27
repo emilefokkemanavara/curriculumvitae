@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import {consume} from '@lit/context';
 import { customElement, state, property } from 'lit/decorators.js';
 import '../IssueList'
+import './ImageSelector'
 import { JsonEditor } from './json-editor';
 import { ValidationIssue } from '../services/validation-result';
 import { buttonStyles } from '../shared-styles';
@@ -50,6 +51,10 @@ export class EditorForm extends LitElement {
         .body > .right-panel > .top {
             flex-grow: 1;
         }
+
+        .body > .right-panel > .bottom {
+            padding: 1em;
+        }
     `]
     private hasInitialized = false;
 
@@ -57,6 +62,9 @@ export class EditorForm extends LitElement {
     existingCv: CvRecord | null | undefined
 
     private cvType: CvType | undefined;
+
+    @state()
+    private isValidating = false;
 
     @property({type: Boolean})
     hasUnsavedChanges = false;
@@ -78,7 +86,7 @@ export class EditorForm extends LitElement {
         this.dispatchChanged();
     }
 
-    private validateAndSave(): void {
+    private async validateAndSave(): Promise<void> {
         if(!this.jsonEditor || !this.dependencies || !this.cvType){
             return;
         }
@@ -102,7 +110,9 @@ export class EditorForm extends LitElement {
             return;
         }
         const cv = this.jsonEditor.getValue();
-        const validatedCv = this.dependencies.validate(cv, this.cvType.schema);
+        this.isValidating = true;
+        const validatedCv = await this.dependencies.validation.validate({name: this.name, cv}, this.cvType);
+        this.isValidating = false;
         if(!validatedCv.success){
             this.validationIssues = validatedCv.issues;
             return;
@@ -110,10 +120,11 @@ export class EditorForm extends LitElement {
         this.validationIssues = [];
         const cvToStore: CvRecord = {
             name: this.name,
-            cv: validatedCv.value
+            cv: validatedCv.value.cv
         }
         const event = new CustomEvent('saverequested', {detail: cvToStore });
         this.dispatchEvent(event);
+        
     }
 
     private dispatchChanged(){
@@ -154,7 +165,7 @@ export class EditorForm extends LitElement {
                     <form action=".." method="get">
                         <button type="submit">Naar overzicht</button>
                     </form>
-                    <button @click="${this.validateAndSave}" .disabled=${!this.hasUnsavedChanges}>Opslaan</button>
+                    <button @click="${this.validateAndSave}" .disabled=${!this.hasUnsavedChanges || this.isValidating}>Opslaan</button>
                 </div>
                 <div class="body" slot="body">
                     <div class="editor-panel">
@@ -164,7 +175,9 @@ export class EditorForm extends LitElement {
                         <div class="top">
                             <issue-list .issues="${this.validationIssues}"></issue-list>
                         </div>
-                        <div class="bottom">feedback</div>
+                        <div class="bottom">
+                            <cv-image-selector></cv-image-selector>
+                        </div>
                     </div>
                 </div>
             </cv-app-layout>

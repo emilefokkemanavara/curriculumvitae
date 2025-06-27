@@ -7,7 +7,7 @@
         "./*": "./*"
     },
     "scripts": {
-        "generate-zod": "json-schema-to-zod -i schema.json -o src/schema.ts -n CvSchema -t Cv"
+        "generate-zod": "cv-schema-to-zod -i schema.json -o src/schema.ts -s CvSchema -t Cv"
     },
     "typesVersions": {
         "*": {
@@ -20,9 +20,13 @@
         "src",
         "schema.json"
     ],
+    "dependencies": {
+        "@curriculumvitae/elements": "workspace:*"
+    },
     "devDependencies": {
-        "json-schema-to-zod": "^2.6.1",
+        "curriculumvitae-schemas": "workspace:*",
         "lit": "^3.3.0",
-        "vite": "^6.3.5"
+        "vite": "^6.3.5",
+        "zod": "^3.25.55"
     }
 }
