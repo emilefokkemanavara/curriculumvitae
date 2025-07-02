@@ -7,10 +7,11 @@ import './ImageList'
 import { consume } from "@lit/context";
 import { dependenciesContext } from "./dependencies-context";
 import { StorableImage } from "../storage/image-repository";
+import { buttonStyles } from "../shared-styles";
 
 @customElement('cv-image-selector')
 export class ImageSelector extends LitElement {
-    static styles = [css`
+    static styles = [buttonStyles, css`
         input[type="file"]{
             display: none;
         }
@@ -18,12 +19,10 @@ export class ImageSelector extends LitElement {
             background-color: transparent;
             border: none;
         }
-        .file-picker-label{
-            text-align: center;
-        }
-        .file-picker-label, summary, button{
+        summary {
             font-size: 1.5em;
         }
+
         .container {
             display: flex;
             flex-direction: row;
@@ -102,7 +101,7 @@ export class ImageSelector extends LitElement {
                         <image-list .imageIds=${this.imageIds} @imageselected=${this.onImageSelected.bind(this)} .selectedId=${this.selectedImage?.id}></image-list>
                     </div>
                     <div class="controls">
-                        <label for="file-input" class="file-picker-label">\u{1f4e4}</label>
+                        <label for="file-input" class="button-like">\u{1f4e4}</label>
                         <input
                             @input=${this.onFileInput.bind(this)}
                             type="file"

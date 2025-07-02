@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, PropertyValues } from 'lit';
 import {consume} from '@lit/context';
 import { customElement, state, property } from 'lit/decorators.js';
 import '../IssueList'
@@ -124,7 +124,6 @@ export class EditorForm extends LitElement {
         }
         const event = new CustomEvent('saverequested', {detail: cvToStore });
         this.dispatchEvent(event);
-        
     }
 
     private dispatchChanged(){
@@ -138,7 +137,10 @@ export class EditorForm extends LitElement {
         }
     }
 
-    protected async updated(): Promise<void> {
+    protected async updated(props: PropertyValues<this>): Promise<void> {
+        if(props.has('existingCv') && this.existingCv){
+            this.name = this.existingCv.name;
+        }
         if(!this.dependencies || this.existingCv === undefined || this.hasInitialized){
             return;
         }
@@ -163,9 +165,9 @@ export class EditorForm extends LitElement {
                 </div>
                 <div class="header" slot="header-right">
                     <form action=".." method="get">
-                        <button type="submit">Naar overzicht</button>
+                        <button type="submit">\u{2b05}\u{fe0f}</button>
                     </form>
-                    <button @click="${this.validateAndSave}" .disabled=${!this.hasUnsavedChanges || this.isValidating}>Opslaan</button>
+                    <button @click="${this.validateAndSave}" .disabled=${!this.hasUnsavedChanges || this.isValidating}>\u{1f4be}</button>
                 </div>
                 <div class="body" slot="body">
                     <div class="editor-panel">

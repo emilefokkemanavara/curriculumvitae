@@ -1,17 +1,48 @@
 import { CvRecord } from "../cv-record";
 import { createCvId } from "../storage/create-id";
-import { CvRepository } from "../storage/cv-repository";
+import { CvRepository, StorableCv } from "../storage/cv-repository";
 
 export type CvSummary = {
     id: string
     name: string
 }
 export interface CvService {
-    storeCv(cv: CvRecord, id: string | null): Promise<string>
+    storeCv(cv: CvRecord, id: string | null): Promise<StorableCv>
     getCv(id: string): Promise<CvRecord | undefined>
     copyCv(id: string): Promise<void>
     deleteCv(id: string): Promise<void>
     getAllCvs(): Promise<CvSummary[]>
+}
+
+function *copyNames(initial: string): Iterable<string> {
+    let copyId = 1;
+    while(true){
+        yield createNewName();
+        copyId++;
+    }
+    function createNewName(){
+        return `${initial} (kopie${copyId === 1 ? '' : ` ${copyId}`})`
+    }
+}
+
+function *duplicateNames(initial: string): Iterable<string> {
+    let counter = 1;
+    while(true){
+        yield createNewName();
+        counter++;
+    }
+    function createNewName(){
+        return `${initial} (${counter})`
+    }
+}
+
+async function generateAvailableName(repository: CvRepository, initial: string, nameSequence: (initial: string) => Iterable<string>): Promise<string>{
+    let newName = initial;
+    const otherNewNames = nameSequence(initial)[Symbol.iterator]();
+    while(await repository.hasCvByName(newName)){
+        newName = otherNewNames.next().value;
+    }
+    return newName;
 }
 
 export function createCvService(repository: CvRepository): CvService {
@@ -26,18 +57,9 @@ export function createCvService(repository: CvRepository): CvService {
             if(!original){
                 return;
             }
-            const name = original.name;
-            let copyId = 1;
-            let newName = createNewName();
-            while(await repository.hasCvByName(newName)){
-                copyId++;
-                newName = createNewName();
-            }
+            const newName = await generateAvailableName(repository, original.name, copyNames);
             const newCv: CvRecord = {name: newName, cv: original.cv};
             await storeCv(newCv, null);
-            function createNewName(){
-                return `${name} (kopie${copyId === 1 ? '' : ` ${copyId}`})`
-            }
         },
         async getAllCvs() {
             try{
@@ -51,12 +73,14 @@ export function createCvService(repository: CvRepository): CvService {
                 throw e;
             }
 
-        },
+        }
     }
-    async function storeCv(cv: CvRecord, id: string | null): Promise<string> {
+    async function storeCv({name, cv}: CvRecord, id: string | null): Promise<StorableCv> {
         const newId = id || createCvId();
-        await repository.storeCv({...cv, id: newId});
-        return newId;
+        const newName = id === null ? await generateAvailableName(repository, name, duplicateNames) : name;
+        const newStorableCv: StorableCv = {name: newName, cv, id: newId};
+        await repository.storeCv(newStorableCv);
+        return newStorableCv;
     }
     async function getCv(id: string): Promise<CvRecord | undefined> {
         const stored = await repository.getCv(id);

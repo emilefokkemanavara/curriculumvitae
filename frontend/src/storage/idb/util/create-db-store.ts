@@ -39,6 +39,17 @@ export function createDbStore(
                 db.close();
             }
         },
+        async count(query){
+            const db = await openDbIfExists();
+            if(!db){
+                return 0;
+            }
+            try {
+                return await performSimpleDbRequest(() => getStore(db, 'readonly').count(query))
+            } finally {
+                db.close();
+            }
+        },
         async *readKeys(query?: IDBValidKey | IDBKeyRange | null, direction?: IDBCursorDirection){
             const db = await openDbIfExists();
             if(!db){

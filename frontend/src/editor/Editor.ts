@@ -48,11 +48,11 @@ export class Editor extends LitElement {
         }
         const cv = ev.detail;
         const cvIsNew = !this.cvId && this.newCvId === null;
-        const newId = await this.dependencies.cvService.storeCv(cv, this.cvId || this.newCvId);
-        this.newCvId = newId;
+        const newCv = await this.dependencies.cvService.storeCv(cv, this.cvId || this.newCvId);
+        this.newCvId = newCv.id;
+        this.existingCv = newCv;
         if(cvIsNew){
-            this.dependencies.pageUrl.setCvId(newId);
-            this.newCvId = newId
+            this.dependencies.pageUrl.setCvId(newCv.id);
         }
         this.hasUnsavedChanges = false;
     }

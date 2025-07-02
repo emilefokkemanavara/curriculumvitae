@@ -31,7 +31,7 @@ export class CvView extends LitElement {
                 this.cv = null;
                 return;
             }
-            const cvRecord = await deps.cvService.getCv(cvId);
+            const cvRecord = await deps.cvRepository.getCv(cvId);
             if(!cvRecord){
                 this.cv = null;
                 return;

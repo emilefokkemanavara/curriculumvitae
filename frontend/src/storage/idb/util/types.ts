@@ -40,6 +40,7 @@ export type DbStore<TStoreDefinition extends DbStoreDefinition = DbStoreDefiniti
         query?: IDBValidKey | IDBKeyRange | null,
         direction?: IDBCursorDirection
     ): AsyncIterable<any, void, CursorInstruction | undefined>
+    count(query?: IDBValidKey | IDBKeyRange): Promise<number>
 } & (
     TStoreDefinition extends {indexes: infer R} 
     ? {

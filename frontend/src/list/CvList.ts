@@ -34,6 +34,12 @@ export class CvList extends LitElement {
             flex-grow: 1;
             text-align: center;
         }
+        #upload {
+            display: none;
+        }
+        form {
+            display: inline;
+        }
     `]
 
     @provide({context: dependenciesContext})
@@ -70,6 +76,21 @@ export class CvList extends LitElement {
         this.task.run();
     }
 
+    private async onUpload(ev: InputEvent): Promise<void> {
+        if(!this.dependencies){
+            return;
+        }
+        const input = ev.target as HTMLInputElement;
+        const file = input.files ? input.files[0] : undefined;
+        if(!file){
+            return;
+        }
+        const didUpload = await this.dependencies.downloadService.uploadCv(file);
+        if(didUpload){
+            this.task.run();
+        }
+    }
+
     render(){
         return html`
             <cv-app-layout>
@@ -77,8 +98,14 @@ export class CvList extends LitElement {
                     <span class="title">curriculumvitae</span>
                 </div>
                 <div class="header" slot="header-right">
+                    <label for="upload" class="button-like">\u{1f4e4}</label>
+                    <input 
+                        id="upload"
+                        type="file"
+                        accept=".zip,application/zip,application/x-zip-compressed"
+                        @input=${this.onUpload.bind(this)} />
                     <form action="${fullEditorUrl}" method="get">
-                        <button type="submit">Nieuw</button>
+                        <button type="submit">\u{2795}</button>
                     </form>
                 </div>
                 <div slot="body" class="body">

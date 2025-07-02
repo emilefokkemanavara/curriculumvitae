@@ -11,6 +11,9 @@ export function createImageRepository(db: CvDb): ImageRepository {
                 content: blob
             })
         },
+        async hasImageById(id) {
+            return await db.images.count(id) > 0;
+        },
         getAllIds() {
             return db.images.readKeys();
         },

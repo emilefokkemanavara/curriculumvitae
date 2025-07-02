@@ -1,18 +1,14 @@
 import { css } from 'lit';
 
 export const buttonStyles = css`
-    button {
-        font-family: "Be Vietnam Pro";
-        color: var(--darkblue);
-        background-color: var(--lightgrey);
-        border-color: var(--darkblue);
-        border-radius: 3px;
-        border-width: 1px;
-        font-size: 1em;
+    button, .button-like {
+        background-color: transparent;
+        border: none;
+        font-size: 1.5em;
+        text-align: center;
     }
-
-    button:active {
-        border-color: var(--lightblue);
+    button:hover, .button-like:hover {
+        background-color: var(--lightgrey);
     }
 
     button:disabled{

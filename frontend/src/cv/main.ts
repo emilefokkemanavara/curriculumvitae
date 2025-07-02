@@ -1,4 +1,3 @@
-import { createCvService } from '../services/cv-service';
 import { getCvType } from '../services/cv-type';
 import { createImageService } from '../services/image-service';
 import { createPageUrl } from '../services/page-url';
@@ -15,12 +14,13 @@ function main(): void {
     const cvViewEl = document.getElementById('cv-view')! as CvView;
     const db = createCvDb();
     const repository = createCvRepository(db);
+    const imageRepository = createImageRepository(db);
     const imageService = createImageService(createImageRepository(db));
     cvViewEl.dependencies = {
         pageUrl: createPageUrl(),
-        cvService: createCvService(repository),
+        cvRepository: repository,
         getCvType: () => getCvType(),
-        validation: createValidationService(imageService),
+        validation: createValidationService(imageRepository),
         cvDependencies: {
             imageService: {
                 async getImageUrl(image) {

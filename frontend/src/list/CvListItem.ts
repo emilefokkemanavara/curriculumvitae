@@ -46,6 +46,13 @@ export class CvListItem extends LitElement {
         this.dispatchEvent(event);
     }
 
+    private onDownloadClick(): void {
+        if(!this.dependencies || !this.summary){
+            return;
+        }
+        this.dependencies.downloadService.downloadCv(this.summary.id);
+    }
+
     render(){
         if(!this.summary || !this.dependencies){
             return undefined;
@@ -57,13 +64,13 @@ export class CvListItem extends LitElement {
                     
                 </div>
                 <div>
-                    <button @click=${this.dispatchCopyRequested.bind(this)}>Kopi&euml;ren</button>
+                    <button @click=${this.dispatchCopyRequested.bind(this)}>\u{1f501}</button>
                     <form action="${fullEditorUrl}" method="get">
                         <input type="hidden" name="id" value="${this.summary.id}" />
-                        <button type="submit">Aanpassen</button>
+                        <button type="submit">\u{1f4dd}</button>
                     </form>
-                    <button @click=${this.dispatchDeleteRequested.bind(this)}>Verwijderen</button>
-                </div>
+                    <button @click=${this.dispatchDeleteRequested.bind(this)}>\u{1f5d1}</button>
+                    <button @click=${this.onDownloadClick.bind(this)}>\u{1f4e5}</button></div>
             </div>
         `
     }

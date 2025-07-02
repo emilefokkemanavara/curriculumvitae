@@ -5,5 +5,6 @@ export interface ImageRepository {
     storeImage(image: StorableImage): Promise<void>
     deleteImage(id: string): Promise<void>
     getImage(id: string): Promise<StorableImage>
+    hasImageById(id: string): Promise<boolean>
     getAllIds(): AsyncIterable<string>
 }

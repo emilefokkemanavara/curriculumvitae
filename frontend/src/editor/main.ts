@@ -16,13 +16,14 @@ async function main(): Promise<void> {
     const jsonEditorEl = document.getElementById('json-editor')!;
     const editorEl = document.getElementById('cv-editor')! as Editor;
     const db = createCvDb();
-    const imageService = createImageService(createImageRepository(db));
+    const imageRepository = createImageRepository(db);
+    const imageService = createImageService(imageRepository);
     editorEl.dependencies = {
         pageUrl: createPageUrl(),
         cvService: createCvService(createCvRepository(db)),
         imageService,
         getCvType: () => getCvType(),
-        validation: createValidationService(imageService),
+        validation: createValidationService(imageRepository),
         jsonEditorFactory: (schemaUrl: string) => createJsonEditor(jsonEditorEl, schemaUrl)
     };
 }
